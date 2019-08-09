@@ -53,6 +53,10 @@ export class Samplesheet {
 
     @Type(() => Sample)
     samples: Sample[] = []
+
+    public constructor(init?:Partial<Samplesheet>) {
+        Object.assign(this, init);
+    }
 }
 
 export enum EnumSequencer {

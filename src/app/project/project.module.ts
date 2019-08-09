@@ -6,7 +6,9 @@ import { ProjectRoutingModule } from './project-routing.module';
 
 import {
   MatInputModule,
+  MatCardModule,
   MatButtonModule,
+  MatListModule,
   MatIconModule,
   MatChipsModule,
   MatAutocompleteModule,
@@ -17,11 +19,13 @@ import { ProjectListComponent } from './project-list/project-list.component';
   declarations: [ProjectComponent, ProjectListComponent],
   imports: [
     CommonModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     ProjectRoutingModule,
     MatInputModule,
+    MatCardModule,
     MatButtonModule,
+    MatListModule,
     MatIconModule,
     MatChipsModule,
     MatAutocompleteModule

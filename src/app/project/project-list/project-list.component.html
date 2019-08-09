@@ -1,1 +1,41 @@
-<p>project-list works!</p>
+<div>
+    <input #filterInput (keyup.enter)="filterProjects(filterInput.value)" class="filter-input"
+        placeholder="Filtrer projekter på navn eller bruger">
+    <button class="filter-button" mat-flat-button color="primary"
+        (click)="filterProjects(filterInput.value)">Filtrer</button>
+</div>
+
+
+<div *ngIf="!projects?.length" class="no-items-found">
+    Ingen projekter blev fundet
+</div>
+
+<div *ngIf="!filteredProjects?.length" class="no-items-found">
+    Ingen projekter matchede filteret
+</div>
+
+<ul class="project-list" *ngIf="filteredProjects?.length">
+
+    <h1>Projekter</h1>
+
+    <li *ngFor="let project of filteredProjects" class="project-list-item">
+        <mat-card background="accent">
+            <mat-card-header>
+                <mat-card-title>{{project.name}}</mat-card-title>
+                <mat-card-subtitle>Oprettet {{project.created | date}} af {{project.author.name}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>
+                    {{project.description}}
+                </p>
+                <p>
+                    Kontakter: {{project.contactsToString()}}
+                </p>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-button><i class="material-icons">edit</i> rediger</button>
+            </mat-card-actions>
+        </mat-card>
+    </li>
+</ul>

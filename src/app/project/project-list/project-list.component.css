@@ -1,0 +1,21 @@
+.filter-button {
+    margin-left: 1em;
+}
+
+.filter-input {
+    width: auto;
+}
+
+.project-list-item {
+    padding-bottom: 2em;
+}
+
+.project-list {
+    margin-left: 25em;
+    margin-right: 25em;
+}
+
+mat-card-content {
+    margin-left: 16px;
+    margin-right: 16px;
+}

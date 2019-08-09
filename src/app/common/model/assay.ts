@@ -24,6 +24,10 @@ export class Assay {
 
     @Type(() => SingleIndex)
     singleIndex: SingleIndex
+
+    public constructor(init?:Partial<Assay>) {
+        Object.assign(this, init);
+    }
 }
 
 export enum EnumAssay {

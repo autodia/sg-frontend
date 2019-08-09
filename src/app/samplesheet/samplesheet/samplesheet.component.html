@@ -32,20 +32,20 @@
                 <p>
                     <mat-form-field>
                         <input matInput type="text" placeholder="Reads1" pattern="\d+" required
-                            [(ngModel)]="samplesheet.reads1" name="reads1" #reads_one="ngModel" id="reads1"
+                            [(ngModel)]="samplesheet.reads1" name="reads1" #reads1="ngModel" id="reads1"
                             class="form-control">
-                        <mat-error *ngIf="reads_one.errors?.required">Mangler</mat-error>
-                        <mat-error *ngIf="reads_one.errors?.pattern">Kun numre</mat-error>
+                        <mat-error *ngIf="reads1.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="reads1.errors?.pattern">Kun numre</mat-error>
                     </mat-form-field>
                 </p>
 
                 <p>
                     <mat-form-field>
                         <input matInput type="text" placeholder="Reads2" pattern="\d+" required
-                            [(ngModel)]="samplesheet.reads2" name="reads2" #reads_two="ngModel" id="reads2"
+                            [(ngModel)]="samplesheet.reads2" name="reads2" #reads2="ngModel" id="reads2"
                             class="form-control">
-                        <mat-error *ngIf="reads_two.errors?.required">Mangler</mat-error>
-                        <mat-error *ngIf="reads_two.errors?.pattern">Kun numre</mat-error>
+                        <mat-error *ngIf="reads2.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="reads2.errors?.pattern">Kun numre</mat-error>
                     </mat-form-field>
                 </p>
 
@@ -73,9 +73,9 @@
 
                 <p>
                     <mat-form-field>
-                        <input matInput type="text" placeholder="Number of samples" required pattern="[+]?[1-9]+" required
-                            [(ngModel)]="numberOfSamples" name="numberOfSamples" #samples="ngModel" id="numberOfSamples"
-                            class="form-control">
+                        <input matInput type="text" placeholder="Number of samples" required pattern="[+]?[1-9]\d*"
+                            required [(ngModel)]="numberOfSamples" name="numberOfSamples" #samples="ngModel"
+                            id="numberOfSamples" class="form-control">
                         <mat-error *ngIf="samples.errors?.required">Mangler</mat-error>
                         <mat-error *ngIf="samples.errors?.pattern">Kun positve hele numre</mat-error>
                     </mat-form-field>
@@ -168,7 +168,7 @@
 
             </div>
         </div>
-        <button type="submit" mat-flat-button color="primary" [disabled]="f.valid">Next</button>
+        <button type="submit" mat-flat-button color="primary" [disabled]="!f.valid">Næste</button>
     </div>
 </form>
 

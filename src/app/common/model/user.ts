@@ -1,13 +1,7 @@
 /**
- * @module Model
- */
-
-import { Type } from 'class-transformer';
-// import { Profile } from './profile';
-
-/**
  * @module Authentication
  */
+
 export class User {
     id: number
 
@@ -17,4 +11,8 @@ export class User {
 
     // @Type(() => Profile)
     // profile: Profile;
+
+    public constructor(init?:Partial<User>) {
+        Object.assign(this, init);
+    }
 }

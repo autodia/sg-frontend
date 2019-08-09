@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
 ];
 

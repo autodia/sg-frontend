@@ -42,34 +42,6 @@ export class SampleListComponent implements OnInit {
     })
   }
 
-  // onLaneChange(value: string, setId: number) {
-  //   this.samples[setId].lane = value
-  // }
-
-  // onNumberChange(value: string, setId: number) {
-  //   this.samples[setId].number = value
-  // }
-
-  // onTypeChange(value: string, setId: number) {
-  //   this.samples[setId].type = value
-  // }
-
-  // onLibraryChange(value: string, setId: number) {
-  //   this.samples[setId].library = value
-  // }
-
-  // onIndex1Change(value: string, setId: number) {
-  //   this.samples[setId].index1 = value
-  // }
-
-  // onIndex2Change(value: string, setId: number) {
-  //   this.samples[setId].index2 = value
-  // }
-
-  // onDescriptionChange(value: string, setId: number) {
-  //   this.samples[setId].description = value
-  // }
-
   back() {
     this.backClicked.emit(null);
   }

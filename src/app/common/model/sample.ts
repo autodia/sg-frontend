@@ -26,4 +26,8 @@
      index2: string
 
      description: string
+
+    public constructor(init?:Partial<Sample>) {
+        Object.assign(this, init);
+    }
  }

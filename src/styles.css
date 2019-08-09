@@ -4,6 +4,14 @@
 
 html, body { padding: 0; margin: 0;} 
 
+body {
+    font-family: "mariregular","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 1.45;
+	color: rgb(63, 63, 63);
+	background: #e8edf0!important;
+}
+
 app-root {
     display: grid;
     grid-template-rows: auto auto;
@@ -22,4 +30,16 @@ app-root {
     grid-area: main;
 }
 
+div.no-items-found {
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/* remove dots from list */
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
 
