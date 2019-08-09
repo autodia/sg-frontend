@@ -1,0 +1,42 @@
+<h1>Project info</h1>
+
+<form #f="ngForm" (ngSubmit)="submit(f)">
+
+    <p>
+        <mat-form-field>
+            <input matInput type="text" required placeholder="Navn" [(ngModel)]="project.name" name="name"
+                #name="ngModel" id="name" class="form-control">
+            <mat-error *ngIf="name.errors?.required">Mangler</mat-error>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field>
+            <input matInput type="text" required placeholder="Beskrivelse" [(ngModel)]="project.description"
+                name="description" #description="ngModel" id="description" class="form-control">
+            <mat-error *ngIf="description.errors?.required">Mangler</mat-error>
+        </mat-form-field>
+    </p>
+
+    <p>
+        <mat-form-field>
+            <mat-chip-list required #contacts>
+                <mat-chip required *ngFor="let contact of project.contacts" 
+                    (removed)="removeContact(contact)">
+                    {{contact.name}} <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Tilføj kontakter" [matChipInputFor]="contacts" #contactInput [formControl]="contactCtrl" [matAutocomplete]="auto" 
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addContact($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option class="contact-autocomplete-option" *ngFor="let user of filteredUsers | async" [value]="user">
+                    {{user}}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="contacts.errors?.required">Mangler</mat-error>
+        </mat-form-field>
+    </p>
+
+
+    <button type="submit" mat-flat-button color="primary" [disabled]="!f.valid || !project.contacts.length">Next</button>
+</form>

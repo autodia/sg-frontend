@@ -1,0 +1,175 @@
+<!-- <div *ngIf="!createSamples"> -->
+
+<form *ngIf="!createSamples" #f="ngForm" (ngSubmit)="next(f.value)">
+
+    <h1>General samplesheet info</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Navn" required [(ngModel)]="samplesheet.name"
+                            name="name" #name="ngModel" id="description" class="form-control">
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Beskrivelse" [(ngModel)]="samplesheet.description"
+                            name="description" #description="ngModel" id="description" class="form-control">
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Chemistry" required [(ngModel)]="samplesheet.chemistry"
+                            name="chemistry" #chemistry="ngModel" id="chemistry" class="form-control">
+                        <mat-error *ngIf="chemistry.errors?.required">Mangler</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Reads1" pattern="\d+" required
+                            [(ngModel)]="samplesheet.reads1" name="reads1" #reads_one="ngModel" id="reads1"
+                            class="form-control">
+                        <mat-error *ngIf="reads_one.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="reads_one.errors?.pattern">Kun numre</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Reads2" pattern="\d+" required
+                            [(ngModel)]="samplesheet.reads2" name="reads2" #reads_two="ngModel" id="reads2"
+                            class="form-control">
+                        <mat-error *ngIf="reads_two.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="reads_two.errors?.pattern">Kun numre</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Adapter read1" required pattern="[A,T,C,G]+"
+                            [(ngModel)]="samplesheet.adapterRead1" name="adapterRead1" #adapterRead1="ngModel"
+                            id="adapterRead1" class="form-control">
+                        <mat-hint>Sekvens af ATCG</mat-hint>
+                        <mat-error *ngIf="adapterRead1.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="adapterRead1.errors?.pattern">Sekvens af ATCG</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Adapter read2" required pattern="[A,T,C,G]+"
+                            [(ngModel)]="samplesheet.adapterRead2" name="adapterRead2" #adapterRead2="ngModel"
+                            id="adapterRead2" class="form-control">
+                        <mat-hint>Sekvens af ATCG</mat-hint>
+                        <mat-error *ngIf="adapterRead2.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="adapterRead2.errors?.pattern">Sekvens af ATCG</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Number of samples" required pattern="[+]?[1-9]+" required
+                            [(ngModel)]="numberOfSamples" name="numberOfSamples" #samples="ngModel" id="numberOfSamples"
+                            class="form-control">
+                        <mat-error *ngIf="samples.errors?.required">Mangler</mat-error>
+                        <mat-error *ngIf="samples.errors?.pattern">Kun positve hele numre</mat-error>
+                    </mat-form-field>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    <mat-form-field>
+                        <mat-label>Sequencer</mat-label>
+                        <mat-select [(ngModel)]="samplesheet.sequencer" name="sequencer" required>
+                            <mat-option *ngFor="let sequencer of sequencerValues" [value]="sequencer.key">
+                                {{sequencer.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input [(ngModel)]="samplesheet.run" name="run" matInput type="text" placeholder="Run number"
+                            required pattern="\d\d\d\d" #run="ngModel" id="run" class="form-control">
+                        <mat-error *ngIf="run.errors?.required">Run mangler</mat-error>
+                        <mat-error *ngIf="run.errors?.pattern">Værdi skal være 4 cifret nummer</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input [(ngModel)]="samplesheet.flowcell" name="flowcell" matInput type="text"
+                            placeholder="Flowcell" required pattern="\d+" #flowcell="ngModel" id="flowcell"
+                            class="form-control">
+                        <mat-error *ngIf="flowcell.errors?.required">Flowcell mangler</mat-error>
+                        <mat-error *ngIf="flowcell.errors?.pattern">Værdi skal være et nummer</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <mat-label>IEM file version</mat-label>
+                        <mat-select [(ngModel)]="samplesheet.IEMFileVersion" name="IEMfileVersion" required>
+                            <mat-option *ngFor="let fileVersion of IEMfileVersionValues" [value]="fileVersion.key">
+                                {{fileVersion.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <input [(ngModel)]="samplesheet.date" name="date" #date="ngModel" matInput
+                            [matDatepicker]="datePicker" placeholder="Date of run" required class="form-control">
+                        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                        <mat-error *ngIf="date.errors?.required">Dato mangler</mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <mat-label>Workflow</mat-label>
+                        <mat-select [(ngModel)]="samplesheet.workflow" name="workflow" required>
+                            <mat-option *ngFor="let workflow of workflowValues" [value]="workflow.key">
+                                {{workflow.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <mat-label>Application</mat-label>
+                        <mat-select [(ngModel)]="samplesheet.application" name="application" required>
+                            <mat-option *ngFor="let application of applicationValues" [value]="application.key">
+                                {{application.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field>
+                        <mat-label>Assay</mat-label>
+                        <mat-select [(ngModel)]="assay" name="assay" required>
+                            <mat-option *ngFor="let assay of assayValues" [value]="assay.key">
+                                {{assay.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+            </div>
+        </div>
+        <button type="submit" mat-flat-button color="primary" [disabled]="f.valid">Next</button>
+    </div>
+</form>
+
+<sample-list *ngIf="createSamples" [samples]="samplesheet.samples" (backClicked)="onBack($event)"></sample-list>

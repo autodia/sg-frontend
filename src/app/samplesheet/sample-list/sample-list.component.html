@@ -1,0 +1,46 @@
+<h1>Samples info</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit(form.value)">
+    <div formArrayName="samplesArray">
+        <fieldset *ngFor="let sample of samples; index as setId;" [formGroupName]="setId">
+            <p>
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Lane</mat-label>
+                    <input matInput type="text" (change)="samples[setId].lane = $event.currentTarget.value"  formControlName="lane">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Number</mat-label>
+                    <input matInput type="text" (change)="samples[setId].number = $event.currentTarget.value" formControlName="number">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Type</mat-label>
+                    <input matInput type="text" (change)="samples[setId].type = $event.currentTarget.value" formControlName="type">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Library</mat-label>
+                    <input matInput type="text" (change)="samples[setId].library = $event.currentTarget.value" formControlName="library">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Index1</mat-label>
+                    <input matInput type="text" (change)="samples[setId].index1 = $event.currentTarget.value" formControlName="index1">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Index2</mat-label>
+                    <input matInput type="text" (change)="samples[setId].index2 = $event.currentTarget.value" formControlName="index2">
+                </mat-form-field>
+
+                <mat-form-field class="sample" appearance="outline">
+                    <mat-label>Beskrivelse</mat-label>
+                    <input matInput type="text" (change)="samples[setId].description = $event.currentTarget.value" formControlName="description">
+                </mat-form-field>
+            </p>
+        </fieldset>
+    </div>
+    <button class="back-button" mat-flat-button color="primary" (click)="back()">Tilbage</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!form.valid">Færdig</button>
+</form>
