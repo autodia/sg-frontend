@@ -10,9 +10,10 @@
     padding-bottom: 2em;
 }
 
-.project-list {
-    margin-left: 25em;
-    margin-right: 25em;
+ul {
+    width: 50%;
+    margin: auto;
+
 }
 
 mat-card-content {

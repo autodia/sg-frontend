@@ -12,8 +12,8 @@
 
     <p>
         <mat-form-field>
-            <input matInput type="text" required placeholder="Beskrivelse" [(ngModel)]="project.description"
-                name="description" #description="ngModel" id="description" class="form-control">
+            <textarea matInput type="text" required cdkTextareaAutosize placeholder="Beskrivelse" [(ngModel)]="project.description"
+                name="description" #description="ngModel" id="description" class="form-control"></textarea>
             <mat-error *ngIf="description.errors?.required">Mangler</mat-error>
         </mat-form-field>
     </p>
@@ -38,5 +38,5 @@
     </p>
 
 
-    <button type="submit" mat-flat-button color="primary" [disabled]="!f.valid || !project.contacts.length">Next</button>
+    <button type="submit" mat-flat-button color="primary" [disabled]="!f.valid || !project.contacts.length">Færdig</button>
 </form>

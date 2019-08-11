@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from 'src/app/common/model/project';
 import { User } from 'src/app/common/model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-list',
@@ -21,13 +22,13 @@ export class ProjectListComponent implements OnInit {
   // filtered projects by project-name, initially none are filtered
   filteredProjects: Project[] = []
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.projects = [
       new Project({
         id: 1, name: "Project 1 2 3 4", author: this.users[0],
-        description: "This is a a description of a project that is very long or maybe short I don't know",
+        description: "This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.",
         contacts: [this.users[0], this.users[1], this.users[2], this.users[3]]
       }),
       new Project({ id: 2, name: "P123", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
@@ -49,5 +50,9 @@ export class ProjectListComponent implements OnInit {
 
   filterProjects(filterValue) {
     this.filteredProjects = this.projects.filter(project => project.name.toLowerCase().includes(filterValue) || project.author.name.toLowerCase().includes(filterValue));
+  }
+
+  edit(p: Project) {
+    this.router.navigate(["/project"], { queryParams: { project: p.id } });
   }
 }
