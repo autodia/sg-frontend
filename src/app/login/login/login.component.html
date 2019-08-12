@@ -1,0 +1,23 @@
+<form #f="ngForm" (ngSubmit)="signIn(f.value)">
+  <h2 >Log venligst på</h2>
+
+  <p>
+    <mat-form-field>
+        <input matInput type="text" placeholder="Brugernavn" required ngModel name="username" required autofocus
+            id="inputBrugernavn" class="form-control">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+        <input matInput type="password" placeholder="Adgangskode" required ngModel name="password" required 
+            id="inputAdgangskode" class="form-control">
+    </mat-form-field>
+  </p>
+
+  <div *ngIf="forkertLogin" class="alert alert-danger">Forkert brugernavn og/eller adgangskode.</div>
+
+  <button class="login-button" type="submit" mat-flat-button color="primary" [disabled]="!f.valid">Log ind</button>
+
+  <!-- <button class="btn btn-lg btn-primary btn-block" type="submit">Log ind</button> -->
+</form>

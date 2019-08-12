@@ -27,11 +27,11 @@ export class ProjectComponent implements OnInit {
   ]
 
   projects = [
-      new Project({
-        id: 1, name: "Project 1 2 3 4", author: this.users[0],
-        description: "This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.",
-        contacts: [this.users[0], this.users[1], this.users[2], this.users[3]]
-      }),
+    new Project({
+      id: 1, name: "Project 1 2 3 4", author: this.users[0],
+      description: "This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.",
+      contacts: [this.users[0], this.users[1], this.users[2], this.users[3]]
+    }),
     new Project({ id: 2, name: "P123", author: this.users[3], description: "Desc1", contacts: [this.users[2]] })
   ]
 
@@ -47,15 +47,15 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.filteredUsers = this.contactCtrl.valueChanges.pipe(
       startWith(null),
-      map(userName => this.filterOnValueChange(userName).slice(0,8))) // slice to avoid having too many reuslts
+      map(userName => this.filterOnValueChange(userName).slice(0, 8))) // slice to avoid having too many reuslts
 
-    if (this.route.snapshot.queryParamMap.has('project')) {
-      let project_id = this.route.snapshot.queryParamMap.get('project')
-      this.project = this.projects.find(p => p.id === +project_id)
-
-    if (this.project == null)
-      this.project = new Project()
-    }
+    this.route.queryParamMap.subscribe(params => {
+      if (params.has('project')) {
+        this.project = this.projects.find(p => p.id === +params.get('project'))
+      } else {
+        this.project = new Project()
+      }
+    })
 
     // GET ALL USERS
   }
@@ -85,8 +85,8 @@ export class ProjectComponent implements OnInit {
 
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    let value = event.option.value 
-    let user = this.users.find(u => u.name == value) 
+    let value = event.option.value
+    let user = this.users.find(u => u.name == value)
 
     // user is guarenteed to be found as its selected from autocomplete
     this.project.contacts.push(user)

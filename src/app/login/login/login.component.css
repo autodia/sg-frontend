@@ -1,0 +1,12 @@
+form {
+  width: 20%;
+  margin: 0 auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.login-button {
+  float: right;
+}

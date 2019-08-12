@@ -4,7 +4,7 @@
 
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { AuthService } from '../common/services/auth.service';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'login',

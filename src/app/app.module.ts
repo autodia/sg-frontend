@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { AppErrorHandler } from './common/errors/app-error-handler';
 import { AuthService } from './common/services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
 import { NoAccessComponent } from './common/component/no-access/no-access.component';
 import { NotFoundComponent } from './common/component/not-found/not-found.component';
 
@@ -29,12 +28,12 @@ import {
 import { SamplesheetModule } from './samplesheet/samplesheet.module';
 import { ProjectModule } from './project/project.module';
 import { HomeModule } from './home/home.module';
+import { LoginModule } from './login/login.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     NoAccessComponent,
     NotFoundComponent,
     NavbarComponent
@@ -45,6 +44,7 @@ import { HomeModule } from './home/home.module';
     HttpClientModule,
     SamplesheetModule,
     ProjectModule,
+    LoginModule,
     AppRoutingModule,
     FormsModule,
     MatIconModule,
