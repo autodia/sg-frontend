@@ -10,7 +10,7 @@
     Ingen projekter blev fundet
 </div>
 
-<div *ngIf="!filteredProjects?.length" class="no-items-found">
+<div *ngIf="projects?.length && !filteredProjects?.length" class="no-items-found">
     Ingen projekter matchede filteret
 </div>
 
@@ -22,7 +22,7 @@
         <mat-card background="accent">
             <mat-card-header>
                 <mat-card-title>{{project.name}}</mat-card-title>
-                <mat-card-subtitle>Oprettet {{project.created | date}} af {{project.author.name}}</mat-card-subtitle>
+                <mat-card-subtitle>Oprettet {{project.created | date}} af {{project.author.username}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <p>

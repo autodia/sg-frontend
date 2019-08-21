@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  testing: false,
   name: "production",
-  url: "placeholder"
+  url: "prod-url"
 };

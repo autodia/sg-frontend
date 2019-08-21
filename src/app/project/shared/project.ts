@@ -1,13 +1,11 @@
-import { User } from './user';
 import { Type } from 'class-transformer';
+import { User } from 'src/app/common/model/user';
 
 /**
  * @module Project
  */
-
-
 export class Project {
-    id: number
+    _id: string
 
     @Type(() => Date)
     created: Date = new Date()
@@ -30,7 +28,7 @@ export class Project {
      * 
      */
     contactsToString(): string {
-        let comma = this.contacts.map(user => user.name).join(", ")
+        let comma = this.contacts.map(user => user.username).join(", ")
         if (!comma.includes(",")) return comma
 
         let lastIdx = comma.lastIndexOf(", ")

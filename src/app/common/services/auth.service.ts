@@ -11,6 +11,9 @@ import { plainToClass } from 'class-transformer';
 import { User } from '../model/user';
 import { Router } from '@angular/router';
 
+import { Apollo } from 'apollo-angular';
+import { LOGIN_QUERY, LoginQueryResponse } from 'src/app/login/graphql';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,9 @@ export class AuthService {
   private endpoint = "authenticate";
   private url: string;
 
-  constructor(private http: HttpClient,
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient,
     public router: Router) {
     this.url = environment.url + "/" + this.endpoint + "/";
   }
@@ -27,7 +32,7 @@ export class AuthService {
    * Sends login request to backend. On successful login response sets token in local storage. 
    * @param credentials object with username and password properties
    */
-  login(credentials) {
+  login_old(credentials) {
     return this.http.post<any>(this.url, credentials)
       .pipe(map(response => {
         if (response && response.token) {
@@ -37,6 +42,23 @@ export class AuthService {
           return false
         }
       }));
+  }
+
+  login(credentials) {
+    return this.apollo.query<LoginQueryResponse>({
+      query: LOGIN_QUERY,
+      variables: {
+        username: credentials.username,
+        password: credentials.password,
+      },
+    }).pipe(map(response => {
+      if (response && response.data.login.token) {
+        localStorage.setItem('token', response.data.login.token)
+        return true
+      } else {
+        return false
+      }
+    }));
   }
 
   /**

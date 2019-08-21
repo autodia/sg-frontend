@@ -58,11 +58,11 @@
                 }
               ]
             },
-            "staging": {
+            "testing": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.testing.ts"
                 }
               ],
               "optimization": true,
@@ -86,6 +86,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ]
             }
           }
         },
@@ -98,6 +106,12 @@
           "configurations": {
             "production": {
               "browserTarget": "GEM-SSG:build:production"
+            },
+            "testing": {
+              "browserTarget": "GEM-SSG:build:testing"
+            },
+            "development": {
+              "browserTarget": "GEM-SSG:build:development"
             }
           }
         },

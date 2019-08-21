@@ -4,11 +4,11 @@
 
 import { Type } from 'class-transformer';
 import { User } from './user';
-import { Project } from './project';
 import { Sample } from './sample';
+import { Project } from 'src/app/project/shared/project';
 
 export class Samplesheet {
-    id: number
+    _id: string
 
     @Type(() => Date)
     created: Date

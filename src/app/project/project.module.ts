@@ -14,6 +14,12 @@ import {
   MatAutocompleteModule,
 } from '@angular/material';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { CreateProjectService } from './shared/create-project.service';
+import { AuthService } from '../common/services/auth.service';
+import { GetProjectService } from './shared/get-project.service';
+import { GetAllProjectService } from './shared/get-all-projects.service';
+import { GetAllProjectNamesService } from './shared/get-all-project-names.service';
+import { GetAllUsersService } from './shared/get-all-users.service';
 
 @NgModule({
   declarations: [ProjectComponent, ProjectListComponent],
@@ -29,6 +35,14 @@ import { ProjectListComponent } from './project-list/project-list.component';
     MatIconModule,
     MatChipsModule,
     MatAutocompleteModule
+  ],
+  providers: [
+    CreateProjectService,
+    AuthService,
+    GetProjectService,
+    GetAllProjectService,
+    GetAllUsersService,
+    GetAllProjectNamesService
   ]
 })
 export class ProjectModule { }

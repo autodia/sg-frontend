@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from 'src/app/common/model/project';
-import { User } from 'src/app/common/model/user';
 import { Router } from '@angular/router';
+import { Project } from '../shared/project';
+import { GetAllProjectService } from '../shared/get-all-projects.service';
+import { plainToClass } from 'class-transformer';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { AppError } from 'src/app/common/errors/app-error';
 
 @Component({
   selector: 'app-project-list',
@@ -10,49 +14,42 @@ import { Router } from '@angular/router';
 })
 export class ProjectListComponent implements OnInit {
 
-  users = [
-    new User({ id: 1, exp: 1, name: "Karla Konradsen" }),
-    new User({ id: 2, exp: 1, name: "Kong Kristian den 4" }),
-    new User({ id: 3, exp: 1, name: "Emil fra Lønneberg" }),
-    new User({ id: 4, exp: 1, name: "Kaj Printz Madsen" })
-  ]
 
+  private projectsSub: Subscription
   projects: Project[] = []
 
   // filtered projects by project-name, initially none are filtered
   filteredProjects: Project[] = []
 
-  constructor(private router: Router) { }
+  constructor(
+    private getAllProjectsService: GetAllProjectService,
+    private router: Router) { }
 
   ngOnInit() {
-    this.projects = [
-      new Project({
-        id: 1, name: "Project 1 2 3 4", author: this.users[0],
-        description: "This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.",
-        contacts: [this.users[0], this.users[1], this.users[2], this.users[3]]
-      }),
-      new Project({ id: 2, name: "P123", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 3, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 4, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 5, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 6, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 7, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 9, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 10, name: "P12", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 11, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 12, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 13, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] }),
-      new Project({ id: 14, name: "P1", author: this.users[3], description: "Desc1", contacts: [this.users[2]] })
-    ]
+    this.projectsSub = this.getAllProjectsService.watch()
+      .valueChanges
+      .pipe(
+        map(result => plainToClass(Project, result.data.projects))
+      ).subscribe(projects => {
+        console.log(projects)
+        this.projects = projects
+        this.filteredProjects = this.projects
+      }, (err: AppError) => {
+        console.log("Get projects error: ", err)
+      }, () => {
+        console.log("Get projects done...")
+      })
+  }
 
-    this.filteredProjects = this.projects
+  ngOnDestroy() {
+    this.projectsSub.unsubscribe();
   }
 
   filterProjects(filterValue) {
-    this.filteredProjects = this.projects.filter(project => project.name.toLowerCase().includes(filterValue) || project.author.name.toLowerCase().includes(filterValue));
+    this.filteredProjects = this.projects.filter(project => project.name.toLowerCase().includes(filterValue) || project.author.username.toLowerCase().includes(filterValue));
   }
 
   edit(p: Project) {
-    this.router.navigate(["/project"], { queryParams: { project: p.id } });
+    this.router.navigate(["/project"], { queryParams: { project: p._id } });
   }
 }

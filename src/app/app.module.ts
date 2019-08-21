@@ -29,6 +29,7 @@ import { SamplesheetModule } from './samplesheet/samplesheet.module';
 import { ProjectModule } from './project/project.module';
 import { HomeModule } from './home/home.module';
 import { LoginModule } from './login/login.module';
+import { GraphQLModule } from './graphql.module';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { LoginModule } from './login/login.module';
     HomeModule,
     MatToolbarModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    GraphQLModule
   ],
   providers: [
     AuthService,

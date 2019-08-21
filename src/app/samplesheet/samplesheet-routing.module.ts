@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'samplesheet',
     component: SamplesheetComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'samplesheet-list',

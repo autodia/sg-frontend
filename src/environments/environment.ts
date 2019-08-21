@@ -8,8 +8,9 @@
 
 export const environment = {
   production: false,
-  name: "default",
-  url: "http://localhost:8000"
+  testing: false,
+  name: "development",
+  url: "http://localhost:8000/graphql"
 };
 
 /*

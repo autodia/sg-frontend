@@ -3,7 +3,7 @@
  */
 
  export class Sample {
-     id: number
+     _id: string
 
      samplesheet: number // REQUIRED
 

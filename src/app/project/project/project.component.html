@@ -1,4 +1,4 @@
-<form *ngIf="project" #f="ngForm" (ngSubmit)="submit(f)">
+<form *ngIf="project && loaded" #f="ngForm" (ngSubmit)="submit()">
     <h1>Project info</h1>
 
     <p>
@@ -22,11 +22,10 @@
         <mat-form-field>
             <mat-chip-list required #contacts>
                 <mat-chip required *ngFor="let contact of project.contacts" (removed)="removeContact(contact)">
-                    {{contact.name}} <mat-icon matChipRemove>cancel</mat-icon>
+                    {{contact.username}} <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
                 <input placeholder="Tilføj kontakter" [matChipInputFor]="contacts" #contactInput
-                    [formControl]="contactCtrl" [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addContact($event)">
+                    [formControl]="contactCtrl" [matAutocomplete]="auto">
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option class="contact-autocomplete-option" *ngFor="let user of filteredUsers | async"

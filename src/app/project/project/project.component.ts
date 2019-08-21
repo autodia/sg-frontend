@@ -1,12 +1,18 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Project } from 'src/app/common/model/project';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { User } from 'src/app/common/model/user';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { Project } from '../shared/project';
+import { plainToClass } from 'class-transformer';
+import { AppError } from 'src/app/common/errors/app-error';
+import { CreateProjectService } from '../shared/create-project.service';
+import { AuthService } from 'src/app/common/services/auth.service';
+import { GetProjectService } from '../shared/get-project.service';
+import { GetAllProjectNamesService } from '../shared/get-all-project-names.service';
+import { GetAllUsersService } from '../shared/get-all-users.service';
 
 @Component({
   selector: 'app-project',
@@ -16,66 +22,72 @@ import { ActivatedRoute } from '@angular/router';
 export class ProjectComponent implements OnInit {
   @ViewChild('contactInput', { static: false }) contactInput: ElementRef;
 
-  allowContactFreeText = false
+  loaded = true
 
   contactCtrl = new FormControl();
 
-  users: User[] = [
-    { id: 1, exp: 1, name: "Bjarne" }, { id: 2, exp: 2, name: "Karl" }, { id: 3, exp: 3, name: "Susan" }, { id: 4, exp: 4, name: "Lord Valde" },
-    { id: 5, exp: 1, name: "Emil" }, { id: 6, exp: 2, name: "Karl-Emil" }, { id: 7, exp: 3, name: "Susanne" }, { id: 8, exp: 4, name: "Casper" },
-    { id: 9, exp: 1, name: "Xavier" }, { id: 10, exp: 2, name: "Åge" }, { id: 11, exp: 3, name: "Kaj" }, { id: 12, exp: 4, name: "Áñnâ" }
-  ]
-
-  projects = [
-    new Project({
-      id: 1, name: "Project 1 2 3 4", author: this.users[0],
-      description: "This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.This is a a description of a project that is very long or maybe short I don't know. bla bla bla bla bla bla bla bla bla bla bla.",
-      contacts: [this.users[0], this.users[1], this.users[2], this.users[3]]
-    }),
-    new Project({ id: 2, name: "P123", author: this.users[3], description: "Desc1", contacts: [this.users[2]] })
-  ]
+  users = []
 
   project: Project
 
   filteredUsers: Observable<string[]>;
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  private userSub: Subscription
+  private paramSub: Subscription
 
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private createProjectService: CreateProjectService,
+    private getProjectsService: GetProjectService,
+    private getAllUsersService: GetAllUsersService,
+    private getAllProjectNamesService: GetAllProjectNamesService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.filteredUsers = this.contactCtrl.valueChanges.pipe(
       startWith(null),
       map(userName => this.filterOnValueChange(userName).slice(0, 8))) // slice to avoid having too many reuslts
 
-    this.route.queryParamMap.subscribe(params => {
+    this.paramSub = this.route.queryParamMap.subscribe(params => {
       if (params.has('project')) {
-        this.project = this.projects.find(p => p.id === +params.get('project'))
+        const project_id = params.get('project')
+
+        this.getProjectsService.fetch({
+          id: project_id
+        }).pipe(map(result => result.data.project)
+        ).subscribe(project => {
+          this.project = project
+        }, (err: AppError) => {
+          console.log("Get project error: ", err)
+        })
       } else {
         this.project = new Project()
       }
     })
 
-    // GET ALL USERS
+    this.getUsers()
   }
 
-  addContact(event: MatChipInputEvent): void {
-    if (!this.allowContactFreeText) {
-      // only allowed to select from the filtered autocomplete list
-      console.log('adding contacts with free text is not allowed');
-      return;
-    }
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.paramSub.unsubscribe();
+  }
 
-    const value = event.value;
-
-    // Add our user
-    if ((value || '').trim()) {
-      let user = this.users.find(u => u.name === value)
-      this.project.contacts.push(user)
-    }
-
-    this.resetInputs()
+  getUsers() {
+    this.userSub = this.getAllUsersService.watch()
+      .valueChanges
+      .pipe(
+        map(result => plainToClass(User, result.data.users))
+      ).subscribe(users => {
+        this.users = users
+      }, (err: AppError) => {
+        console.log("Error get users: ", err)
+        this.loaded = true
+      }, () => {
+        console.log("Done getting users")
+        this.loaded = true
+      })
   }
 
   private resetInputs() {
@@ -86,7 +98,7 @@ export class ProjectComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     let value = event.option.value
-    let user = this.users.find(u => u.name == value)
+    let user = this.users.find(u => u.username == value)
 
     // user is guarenteed to be found as its selected from autocomplete
     this.project.contacts.push(user)
@@ -106,7 +118,7 @@ export class ProjectComponent implements OnInit {
     if (userName) {
       result = this.filterUser(usersNotSelected, userName);
     } else {
-      result = usersNotSelected.map(user => user.name);
+      result = usersNotSelected.map(user => user.username);
     }
     return result;
   }
@@ -114,8 +126,8 @@ export class ProjectComponent implements OnInit {
   private filterUser(users: User[], userName: string): string[] {
     let filteredUsers: User[] = [];
     const filterValue = userName.toLowerCase();
-    let matches = users.filter(user => user.name.toLowerCase().includes(filterValue));
-    if (matches.length || this.allowContactFreeText) {
+    let matches = users.filter(user => user.username.toLowerCase().includes(filterValue));
+    if (matches.length) {
       //
       // either the user name matched some autocomplete options 
       // or the name didn't match but we're allowing 
@@ -134,7 +146,7 @@ export class ProjectComponent implements OnInit {
     // Convert filtered list of user objects to list of engineer 
     // name strings and return it
     //
-    return filteredUsers.map(user => user.name);
+    return filteredUsers.map(user => user.username);
   }
 
   removeContact(user: User): void {
@@ -146,14 +158,42 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  submit(formData: NgForm) {
-    // check that project name is unique
+  async submit() {
+    let projects = await this.getAllProjectNamesService
+      .fetch()
+      .pipe(
+        map(result => result.data.projects)
+      ).toPromise().then(projects => {
+        return projects
+      }, (err: AppError) => {
+        console.log("Get project names error: ", err)
+      })
 
-    // check contacts are added
-    if (this.project.contacts.length) {
+    let isUnique = !(projects as Project[]).some(p => p.name === this.project.name)
+    let hasContacts = this.project.contacts.length > 0
+
+    if (isUnique && hasContacts) {
+      // set author
+      this.project.author = this.authService.User
+
       console.log("Submit activate: ", this.project)
-    }
 
+      this.createProjectService.mutate({
+        projectInput: {
+          created: this.project.created.toString(),
+          author: this.project.author._id,
+          name: this.project.name,
+          description: this.project.description,
+          contacts: this.project.contacts.map(c => c._id)
+        }
+      }).subscribe(({ data, loading }) => {
+        console.log(data)
+      }, (err: AppError) => {
+        console.log("Create project error: ", err)
+      }, () => {
+        console.log("Done creating project")
+      });
+    }
     // post / update project
   }
 }

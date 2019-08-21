@@ -6,7 +6,7 @@ import { Type } from 'class-transformer';
  */
 
 export class Assay {
-    id: number
+    _id: string
 
     // CHECK TYPE
     assay: EnumAssay // REQUIRED

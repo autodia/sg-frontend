@@ -3,14 +3,11 @@
  */
 
 export class User {
-    id: number
+    _id: string
 
     exp: number
 
-    name: string
-
-    // @Type(() => Profile)
-    // profile: Profile;
+    username: string
 
     public constructor(init?:Partial<User>) {
         Object.assign(this, init);
