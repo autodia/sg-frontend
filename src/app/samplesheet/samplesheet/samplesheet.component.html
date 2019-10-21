@@ -151,7 +151,7 @@
         <p>
             <mat-form-field>
                 <mat-label>Assay</mat-label>
-                <mat-select [(ngModel)]="assay" name="assay" required>
+                <mat-select [(ngModel)]="samplesheet.assay" name="assay" required>
                     <mat-option *ngFor="let assay of assayValues" [value]="assay.key">
                         {{assay.value}}
                     </mat-option>

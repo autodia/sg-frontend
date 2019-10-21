@@ -25,6 +25,8 @@ export class Samplesheet {
 
     sequencer: EnumSequencer
 
+    assay: String
+
     run: number
 
     // CHECK TYPE

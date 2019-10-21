@@ -84,6 +84,10 @@ export class AuthService {
     this.router.navigate(["/login"]);
   }
 
+  add_token(token) {
+    localStorage.setItem('token', token)
+  }
+
   /**
    * Returns the currently logged in user or null if no user is logged in.
    */
