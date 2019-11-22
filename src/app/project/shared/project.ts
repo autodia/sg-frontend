@@ -24,11 +24,8 @@ export class Project {
         Object.assign(this, init);
     }
 
-    /**
-     * 
-     */
     contactsToString(): string {
-        let comma = this.contacts.map(user => user.username).join(", ")
+        let comma = this.contacts.map(user => user.profile.display_name).join(", ")
         if (!comma.includes(",")) return comma
 
         let lastIdx = comma.lastIndexOf(", ")

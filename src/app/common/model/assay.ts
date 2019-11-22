@@ -25,16 +25,24 @@ export class Assay {
     @Type(() => SingleIndex)
     singleIndex: SingleIndex
 
-    public constructor(init?:Partial<Assay>) {
+    public constructor(init?: Partial<Assay>) {
         Object.assign(this, init);
     }
 }
 
+
 export enum EnumAssay {
-    NexteraDNAFlex = 10,
-    TruSeqDNASingleIndexes = 20,
-    TruSightRapidCapture = 30,
-    IDT_ILMNTruSeqDNAUDIndexes = 40
+    'Easyseq NGS, Reverse Complement PCR' = 10,
+    'IDT-ILMN TruSeq DNA UD Indexes' = 20,
+    'NEBNext Direct (TruSeq Nano DNA)' = 30,
+    'Nextera DNA Flex' = 40,
+    'Nextera XT v2' = 50,
+    'SureSelect XT HS' = 60,
+    'TruSeq Combinatorial Dual Indexes (TruSeq HT)' = 70,
+    'TruSeq DNA Single Indexes' = 80,
+    'TruSeq DNA LT Single Indexes' = 90,
+    'TruSight Oncology 500 Kit Unique Dual Indexes' = 100,
+    'TruSight Rapid Capture' = 110
 }
 
 export namespace EnumAssay {

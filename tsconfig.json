@@ -6,6 +6,9 @@
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
+    // "types": [
+    //   "reflect-metadata"
+    // ],
     "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",

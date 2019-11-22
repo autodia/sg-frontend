@@ -27,19 +27,19 @@
 
         <p>
             <mat-form-field>
-                <input matInput type="text" placeholder="Reads1" pattern="\d+" required [(ngModel)]="samplesheet.reads1"
-                    name="reads1" #reads1="ngModel" id="reads1" class="form-control">
-                <mat-error *ngIf="reads1.errors?.required">Mangler</mat-error>
-                <mat-error *ngIf="reads1.errors?.pattern">Kun numre</mat-error>
+                <input matInput type="text" placeholder="Reads" pattern="^[1-9][0-9]+$" required [(ngModel)]="samplesheet.reads"
+                    name="reads" #reads="ngModel" id="reads" class="form-control">
+                <mat-error *ngIf="reads.errors?.required">Mangler</mat-error>
+                <mat-error *ngIf="reads.errors?.pattern">Kun numre</mat-error>
             </mat-form-field>
         </p>
 
         <p>
             <mat-form-field>
-                <input matInput type="text" placeholder="Reads2" pattern="\d+" required [(ngModel)]="samplesheet.reads2"
-                    name="reads2" #reads2="ngModel" id="reads2" class="form-control">
-                <mat-error *ngIf="reads2.errors?.required">Mangler</mat-error>
-                <mat-error *ngIf="reads2.errors?.pattern">Kun numre</mat-error>
+                <input matInput type="text" placeholder="Length på læste Umi" pattern="^[0-9]$" required [(ngModel)]="samplesheet.umi"
+                    name="umi" #umi="ngModel" id="umi" class="form-control">
+                <mat-error *ngIf="umi.errors?.required">Mangler</mat-error>
+                <mat-error *ngIf="umi.errors?.pattern">Kun numre</mat-error>
             </mat-form-field>
         </p>
 

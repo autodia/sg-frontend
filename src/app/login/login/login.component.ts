@@ -24,6 +24,7 @@ export class LoginComponent {
    * @param credentials object with username and password
    */
   signIn(credentials) {
+    return;
     this.authService.login(credentials)
       .subscribe(result => {
         if (result) {

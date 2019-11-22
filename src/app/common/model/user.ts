@@ -1,15 +1,16 @@
 /**
- * @module Authentication
+ * @module Model
  */
 
+import { Type } from 'class-transformer';
+import { Profile } from './profile';
+
+/**
+ * @module Authentication
+ */
 export class User {
-    _id: string
+    exp: number;
 
-    exp: number
-
-    username: string
-
-    public constructor(init?:Partial<User>) {
-        Object.assign(this, init);
-    }
+    @Type(() => Profile)
+    profile: Profile;
 }

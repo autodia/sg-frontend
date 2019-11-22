@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '../shared/project';
 import { plainToClass } from 'class-transformer';
 import { AppError } from 'src/app/common/errors/app-error';
-import { CreateProjectService } from '../shared/create-project.service';
+import { CreateProjectService, ProjectInput } from '../shared/create-project.service';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { GetProjectService } from '../shared/get-project.service';
 import { GetAllProjectNamesService } from '../shared/get-all-project-names.service';
@@ -30,9 +30,12 @@ export class ProjectComponent implements OnInit {
 
   project: Project
 
+  projectNames: string[]
+
   filteredUsers: Observable<string[]>;
 
   private userSub: Subscription
+  private projectNameSub: Subscription
   private paramSub: Subscription
 
 
@@ -66,12 +69,27 @@ export class ProjectComponent implements OnInit {
       }
     })
 
+    this.getProjectNames()
     this.getUsers()
   }
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
     this.paramSub.unsubscribe();
+    this.projectNameSub.unsubscribe();
+  }
+
+  getProjectNames() {
+    this.projectNameSub = this.getAllProjectNamesService.fetch({},{
+      fetchPolicy: 'network-only'
+    })
+      .pipe(
+        map(result => result.data.projects)
+      ).subscribe(projects => {
+        this.projectNames = projects.map(p => p.name)
+      }, (err: AppError) => {
+        console.log("Get project names error: ", err)
+      })
   }
 
   getUsers() {
@@ -126,7 +144,7 @@ export class ProjectComponent implements OnInit {
   private filterUser(users: User[], userName: string): string[] {
     let filteredUsers: User[] = [];
     const filterValue = userName.toLowerCase();
-    let matches = users.filter(user => user.username.toLowerCase().includes(filterValue));
+    let matches = users.filter(user => user.profile.display_name.toLowerCase().includes(filterValue));
     if (matches.length) {
       //
       // either the user name matched some autocomplete options 
@@ -146,7 +164,7 @@ export class ProjectComponent implements OnInit {
     // Convert filtered list of user objects to list of engineer 
     // name strings and return it
     //
-    return filteredUsers.map(user => user.username);
+    return filteredUsers.map(user => user.profile.display_name);
   }
 
   removeContact(user: User): void {
@@ -159,17 +177,7 @@ export class ProjectComponent implements OnInit {
   }
 
   async submit() {
-    let projects = await this.getAllProjectNamesService
-      .fetch()
-      .pipe(
-        map(result => result.data.projects)
-      ).toPromise().then(projects => {
-        return projects
-      }, (err: AppError) => {
-        console.log("Get project names error: ", err)
-      })
-
-    let isUnique = !(projects as Project[]).some(p => p.name === this.project.name)
+    let isUnique = !this.projectNames.some(name => name === this.project.name)
     let hasContacts = this.project.contacts.length > 0
 
     if (isUnique && hasContacts) {
@@ -178,14 +186,15 @@ export class ProjectComponent implements OnInit {
 
       console.log("Submit activate: ", this.project)
 
-      this.createProjectService.mutate({
-        projectInput: {
-          created: this.project.created.toString(),
-          author: this.project.author._id,
+      let projectInput: ProjectInput = {
+          author: this.project.author.profile.id.toString(),
           name: this.project.name,
           description: this.project.description,
-          contacts: this.project.contacts.map(c => c._id)
-        }
+          contacts: this.project.contacts.map(c => c.profile.id.toString())
+      }
+
+      this.createProjectService.mutate({
+        projectInput: projectInput
       }).subscribe(({ data, loading }) => {
         console.log(data)
       }, (err: AppError) => {
@@ -194,6 +203,7 @@ export class ProjectComponent implements OnInit {
         console.log("Done creating project")
       });
     }
-    // post / update project
+
+    this.getProjectNames()
   }
 }

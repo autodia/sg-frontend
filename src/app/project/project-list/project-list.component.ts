@@ -29,10 +29,10 @@ export class ProjectListComponent implements OnInit {
     this.projectsSub = this.getAllProjectsService.watch()
       .valueChanges
       .pipe(
-        map(result => plainToClass(Project, result.data.projects))
+        // map(result => plainToClass(Project, result.data.projects))
+        map(result => result.data.projects)
       ).subscribe(projects => {
-        console.log(projects)
-        this.projects = projects
+        this.projects = plainToClass(Project, projects)
         this.filteredProjects = this.projects
       }, (err: AppError) => {
         console.log("Get projects error: ", err)
@@ -46,7 +46,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   filterProjects(filterValue) {
-    this.filteredProjects = this.projects.filter(project => project.name.toLowerCase().includes(filterValue) || project.author.username.toLowerCase().includes(filterValue));
+    this.filteredProjects = this.projects.filter(project => project.name.toLowerCase().includes(filterValue) || project.author.profile.display_name.toLowerCase().includes(filterValue));
   }
 
   edit(p: Project) {

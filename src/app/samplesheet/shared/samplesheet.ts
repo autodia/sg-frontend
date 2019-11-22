@@ -3,9 +3,9 @@
  */
 
 import { Type } from 'class-transformer';
-import { User } from './user';
-import { Sample } from './sample';
 import { Project } from 'src/app/project/shared/project';
+import { User } from 'src/app/common/model/user';
+import { Sample } from 'src/app/common/model/sample';
 
 export class Samplesheet {
     _id: string
@@ -45,9 +45,9 @@ export class Samplesheet {
 
     chemistry: string = "Default"
 
-    reads1: number
+    reads: string = "151"
 
-    reads2: number
+    umi: string = '0'
 
     adapterRead1: string
 
@@ -62,10 +62,14 @@ export class Samplesheet {
 }
 
 export enum EnumSequencer {
-    NextSeqBeyonce = 10,
-    NextSeqVictoria = 20,
-    HiSeq = 30,
-    NovaSeq = 40
+    'HiSeq D00140' = 10,
+    'MiSeq M01115 - Zlatan' = 20,
+    'MiSeq M03392 - Messi' = 30,
+    'MiSeq M04671 - Ronaldo' = 40,
+    'NextSeq NB501792 - Beyonce' = 50,
+    'NextSeq NS500314 - Victoria' = 60,
+    'NovaSeq A00281 - RH'= 70,
+    'NovaSeq A00559 - KC' = 80
 }
 
 export namespace EnumSequencer {
@@ -104,7 +108,7 @@ export namespace EnumIEMFileVersion {
 }
 
 export enum EnumWorkflow {
-    GenerateFASTQ = 10
+    'GenerateFASTQ' = 10
 }
 
 export namespace EnumWorkflow {
@@ -124,8 +128,8 @@ export namespace EnumWorkflow {
 }
 
 export enum EnumApplication {
-    NextSeqFASTQOnly = 10,
-    NovaSeqFASTQOnly = 20
+    'NextSeq FASTQ Only' = 10,
+    'NovaSeq FASTQ Only' = 20
 }
 
 export namespace EnumApplication {

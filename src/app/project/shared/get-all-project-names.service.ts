@@ -15,6 +15,7 @@ export class GetAllProjectNamesService extends Query<AllProjectNamesQueryRespons
     document = gql`
         query { 
             projects {
+                _id,
                 name
             }
         }`;

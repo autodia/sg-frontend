@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
+import { CreateUserService } from './create-user.service';
+import { AppError } from 'src/app/common/errors/app-error';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute
+    private createUserService: CreateUserService,
   ) { }
 
   ngOnInit() {
@@ -21,8 +23,25 @@ export class HomeComponent implements OnInit {
     if (url.includes('?')) {
       const httpParams = new HttpParams({ fromString: url.split('?')[1] });
       token = httpParams.get('token');
-      if (token)
+      if (token) {
         this.authService.add_token(token)
+
+        let user = this.authService.User 
+
+        this.createUserService.mutate({
+          userInput: {
+            username: user.profile.display_name,
+            email: user.profile.email,
+            password: "1234"
+          }
+        }).subscribe(({ data, loading }) => {
+          console.log(data)
+        }, (err: AppError) => {
+          console.log("Create user from token error: ", err)
+        }, () => {
+          console.log("Done creating user from token")
+        });
+      }
     }
   }
 }

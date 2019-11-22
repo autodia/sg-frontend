@@ -101,7 +101,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "GEM-SSG:build",
-            "port": 4300
+            "port": 8080
           },
           "configurations": {
             "production": {

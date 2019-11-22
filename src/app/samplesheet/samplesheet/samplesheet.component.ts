@@ -5,7 +5,7 @@
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { Component, OnInit } from '@angular/core';
-import { Samplesheet, EnumSequencer, EnumIEMFileVersion, EnumWorkflow, EnumApplication } from 'src/app/common/model/samplesheet';
+import { Samplesheet, EnumSequencer, EnumIEMFileVersion, EnumWorkflow, EnumApplication } from '../shared/samplesheet';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/common/helpers/date-helper';
 import { AuthService } from 'src/app/common/services/auth.service';
 import { EnumAssay } from 'src/app/common/model/assay';

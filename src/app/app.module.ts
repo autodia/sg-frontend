@@ -45,7 +45,7 @@ import { GraphQLModule } from './graphql.module';
     HttpClientModule,
     SamplesheetModule,
     ProjectModule,
-    LoginModule,
+    // LoginModule,
     AppRoutingModule,
     FormsModule,
     MatIconModule,
